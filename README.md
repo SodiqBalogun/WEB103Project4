@@ -2,7 +2,7 @@
 
 Submitted by: **Sodiq Balogun**
 
-About this web app: **Allows users to view, create, edit, and delete different cars with multiple attributes. **
+About this web app: **Allows users to view, create, edit, and delete different cars with multiple attributes.**
 
 Time spent: **10** hours
 
@@ -39,7 +39,7 @@ The following **additional** features are implemented:
 
 Here's a walkthrough of implemented required features:
 
-
+![Project 4 Showcase](./Project4-CarCaravan.gif)
 
 <!-- Replace this with whatever GIF tool you used! -->
 GIF created with LICECap
