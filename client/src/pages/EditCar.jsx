@@ -20,6 +20,7 @@ const EditCar = () => {
     const [roofId, setRoofId] = useState('')
     const [interiorId, setInteriorId] = useState('')
     const [notes, setNotes] = useState('')
+    const [error, setError] = useState(null)
 
     useEffect(() => {
         ;(async () => {
@@ -57,7 +58,13 @@ const EditCar = () => {
         }
     }, [car])
 
-    if (!car) return <div className='page edit customize-page'>Loading…</div>
+    if (!car) {
+        return (
+            <div className='page edit customize-page'>
+                <p className='customize-loading'>Loading…</p>
+            </div>
+        )
+    }
 
     const selectedExterior = exteriors.find(e => String(e.id) === String(exteriorId))
     const selectedWheel = wheels.find(w => String(w.id) === String(wheelId))
@@ -68,13 +75,14 @@ const EditCar = () => {
 
     async function handleSave(e) {
         e.preventDefault()
+        setError(null)
         const valid = validateCombination({
             exterior: selectedExterior,
             wheel: selectedWheel,
             roof: selectedRoof,
             interior: selectedInterior,
         })
-        if (!valid.ok) return alert(valid.error)
+        if (!valid.ok) return setError(valid.error)
         await updateCar(id, {
             name,
             exterior_id: exteriorId,
@@ -91,8 +99,8 @@ const EditCar = () => {
         <div className='page edit customize-page'>
             <header className='car-list-header'>
                 <div>
-                    <h2>Edit Car</h2>
-                    <p className='car-list-subtitle'>Choose one option per row — selection is highlighted</p>
+                    <h2>Edit Custom Car</h2>
+                    <p className='car-list-subtitle'>Tap an image in each row to choose your build</p>
                 </div>
             </header>
 
@@ -139,6 +147,8 @@ const EditCar = () => {
                     <span>Total build price</span>
                     <strong>${Number(totalPrice || 0).toLocaleString()}</strong>
                 </div>
+
+                {error && <div className='error'>{error}</div>}
 
                 <button type='submit' className='customize-submit'>
                     Save changes
