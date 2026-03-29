@@ -2,6 +2,8 @@ import express from 'express'
 import path from 'path'
 import favicon from 'serve-favicon'
 import dotenv from 'dotenv'
+import router from './routes/items.js'
+import { pool } from './config/database.js'
 
 // import the router from your routes file
 
@@ -23,7 +25,7 @@ else if (process.env.NODE_ENV === 'production') {
 }
 
 // specify the api path for the server to use
-
+app.use('/api', router)
 
 if (process.env.NODE_ENV === 'production') {
     app.get('/*', (_, res) =>
@@ -31,6 +33,15 @@ if (process.env.NODE_ENV === 'production') {
     )
 }
 
-app.listen(PORT, () => {
-    console.log(`server listening on http://localhost:${PORT}`)
-})
+;(async () => {
+    try {
+        await pool.query('SELECT 1')
+        console.log('Database connection OK')
+    } catch (err) {
+        console.error('Database connection error:', err.message)
+    }
+
+    app.listen(PORT, () => {
+        console.log(`server listening on http://localhost:${PORT}`)
+    })
+})()
